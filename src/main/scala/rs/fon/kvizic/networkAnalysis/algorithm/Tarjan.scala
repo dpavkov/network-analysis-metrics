@@ -39,13 +39,18 @@ object Tarjan {
 
   class TarjanNetwork(val nodes: List[TarjanNode]) {
 
-    def reverseMinLowLink(lowLink: Int): TarjanNetwork = {
+    def reverseMinLowLink(lowLink: Int, changeLowLinkFor: Set[Int], visited: TarjanNetwork): TarjanNetwork = {
       val head = nodes.head
-      if (head.lowLink <= lowLink) new TarjanNetwork(List(head))
+      if (head.lowLink <= lowLink) {
+        val updatedRelations: List[TarjanNode] = for (node <- visited.nodes) yield
+          if (changeLowLinkFor contains(node.lowLink)) 
+          node.minLowLink(lowLink)
+          else node
+        new TarjanNetwork(updatedRelations)
+        
+      }
       else {
-        val newHead = head.minLowLink(lowLink)
-        val newStack = new TarjanNetwork(nodes.tail).reverseMinLowLink(lowLink)
-        new TarjanNetwork(newHead :: newStack.nodes)
+       new TarjanNetwork(nodes.tail).reverseMinLowLink(lowLink, changeLowLinkFor + head.lowLink, visited)
       }
     }
 
@@ -72,6 +77,7 @@ object Tarjan {
           this.find(successors.head) match {
             case None => dfsIter(current, successors.tail, stack, visited) // not in network
             case Some(nextActor) => {
+              println("next: " + nextActor)
               visited.find(nextActor.actor) match {
                 case None => { // in network, not visited
                   val nextNodeIndex = visited.nodes.head.index + 1
@@ -87,10 +93,9 @@ object Tarjan {
                   stack.find(nextNode.actor) match {
                     case None => dfsIter(current, successors.tail, stack, visited) //in network, visited, not in stack
                     case Some(nextNode) => { //in network, visited, in stack
-                      val updatedStack: TarjanNetwork = stack.reverseMinLowLink(nextNode.lowLink)
-                      val nextStack: TarjanNetwork = stack.replaceAll(updatedStack.nodes)
-                      val nextVisited: TarjanNetwork = visited.replaceAll(updatedStack.nodes)
-                      dfsIter(nextVisited.nodes.head, successors.tail, stack, nextVisited)
+                      val nextVisited: TarjanNetwork = stack.reverseMinLowLink(nextNode.lowLink, Set(current.lowLink), visited)
+                      val nextStack: TarjanNetwork = stack.replaceAll(nextVisited.nodes)
+                      dfsIter(nextVisited.nodes.head, successors.tail, nextStack, nextVisited)
                     }
                   }
 
