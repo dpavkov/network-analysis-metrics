@@ -77,7 +77,6 @@ object Tarjan {
           this.find(successors.head) match {
             case None => dfsIter(current, successors.tail, stack, visited) // not in network
             case Some(nextActor) => {
-              println("next: " + nextActor)
               visited.find(nextActor.actor) match {
                 case None => { // in network, not visited
                   val nextNodeIndex = visited.nodes.head.index + 1
