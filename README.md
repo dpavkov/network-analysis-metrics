@@ -1,9 +1,7 @@
 network-analysis-metrics
-========================
+
 
 Network Analysis Metrics is an open source scala library that calculates SNA metrics for you application`s graph. 
-
-========================
 
 Currently the following metrics are implemented:
 
@@ -15,7 +13,7 @@ Detailed explanation of each of the metrics is provided in wiki pages
 
 More metrics to come.
 
-========================
+* Example usage *
 
 Example project will be setup in the near future. Until then, please read the following text on how to use this library:
 
@@ -23,11 +21,14 @@ The domain describes two kinds of actors: Humans and Obin. Humans may like Human
 
 First, for each of the relations the object that extends RelationType is defined:
 
+```
 case object LikeRelationType extends RelationType("like")
 case object LikeObinRelationType extends RelationType("like obin")
+```
 
 Next, for each of the relation types create a concrete class that defines what kind of relation it should be. This is done by extending one of the subclasses of Relation abstract class. For our example simple BinaryRelation is used which only says that the relation exists:
 
+```
 class Like(paramEndActor: Human) extends BinaryRelation(paramEndActor) {
   def relType: RelationType = LikeRelationType
 }
@@ -35,9 +36,11 @@ class Like(paramEndActor: Human) extends BinaryRelation(paramEndActor) {
 class LikeObin(paramEndActor: Obin) extends BinaryRelation(paramEndActor) {
   def relType: RelationType = LikeObinRelationType
 }
+```
 
 The next step is to wire your domain objects to the metrics. This is done by implementing Actor trait. It has two abstract methods. The first one, relations, which returns a list of modes. Mode is entity used internally by the library and it holds all the relations of one type for the actor. The second one is  updateRelations(newRels: List[Relation]). It returns the actor with all the relations of the current actor of the type of input list replaced by input argument. Here`s how it looks like in our case:
 
+```
 class Obin(val name: String, val likes: List[Actor]) extends Actor {
 override def toString: String = name
 
@@ -76,7 +79,9 @@ override def toString: String = name
   }
 
 }
+```
 
+```
 class Human(val name: String, humans: => List[Human], obins: => List[Obin]) extends Actor {
 
   override def toString: String = name
@@ -147,9 +152,11 @@ class Human(val name: String, humans: => List[Human], obins: => List[Obin]) exte
     new Human(name, newLikes, obins)
   }
 }
+```
 
 Now, lets create a mock repository with several actors defined:
 
+```
 object DataRepository {
 
   val jane: Human = new Human("jane", List(john, zoe), List())
@@ -164,9 +171,11 @@ object DataRepository {
   val hickory: Obin = new Obin("hickory", List(zoe, john, jane))
 
 }
+```
 
 Finally, lets open the repl, create the network and calculate the metrics:
 
+```
 val zoesTale: Network = new Network(List(zoe, john, jane, hickory, dickory, enzo, gretchen, savitri, betsy, manfred))
                                                   //> zoesTale  : rs.fon.kvizic.networkAnalysis.Network = rs.fon.kvizic.networkAna
                                                   //| lysis.Network@ed09f6
@@ -223,6 +232,6 @@ val zoesTale: Network = new Network(List(zoe, john, jane, hickory, dickory, enzo
                                                   //| 
                                                   //| betsy
                                                   //| 
-
+```
 
 
