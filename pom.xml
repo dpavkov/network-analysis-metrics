@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>rs.fon.kvizic</groupId>
 	<artifactId>network-analysis-metrics</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.0</version>
 	<name>${project.artifactId}</name>
 	<description>Analyzes the structure of the network</description>
 	<packaging>pom</packaging>
