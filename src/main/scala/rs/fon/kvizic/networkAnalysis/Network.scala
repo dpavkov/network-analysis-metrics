@@ -1,6 +1,12 @@
 package rs.fon.kvizic.networkAnalysis
 
+import rs.fon.kvizic.networkAnalysis.algorithm.Tarjan
+
 class Network(val actors: List[Actor] = List[Actor]()) {
+  
+  override def toString: String = "\nNetwork: " + {
+    for (actor <- actors) yield "\n" + actor 
+  }
 
   protected def actorsByClass: Map[Class[_ <: Actor], List[Actor]] = actors.groupBy[Class[_ <: Actor]](actor => actor.getClass())
 
@@ -8,6 +14,8 @@ class Network(val actors: List[Actor] = List[Actor]()) {
     case List() => None
     case newList => Option(new Network(newList))
   }
+  
+  def stronglyConnectedComponents: List[Network] = Tarjan.connectedComponents(this)
 
   def removeActors(oldActors: List[Actor]): Option[Network] = {
 
