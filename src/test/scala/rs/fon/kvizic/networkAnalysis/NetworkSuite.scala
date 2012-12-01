@@ -69,9 +69,9 @@ class NetworkSuite extends FunSuite {
   
   test("test average degree") {
     when(actor1.outDegree(rt)).thenReturn(0)
-    when(actor2.outDegree(rt)).thenReturn(2)
+    when(actor2.outDegree(rt)).thenReturn(3)
     when(actor3.outDegree(rt)).thenReturn(6)
-    assert(4 == network.averageDegree(rt))
+    assert(3 == network.averageDegree(rt))
     verify(actor1).outDegree(rt)
     verify(actor2, times(2)).outDegree(rt)
     verify(actor3, times(2)).outDegree(rt) 
