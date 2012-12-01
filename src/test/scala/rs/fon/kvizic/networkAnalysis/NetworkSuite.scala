@@ -67,6 +67,18 @@ class NetworkSuite extends FunSuite {
     reset(actor1, actor2, actor3)
   }
   
+  test("test average degree") {
+    when(actor1.outDegree(rt)).thenReturn(0)
+    when(actor2.outDegree(rt)).thenReturn(2)
+    when(actor3.outDegree(rt)).thenReturn(6)
+    assert(4 == network.averageDegree(rt))
+    verify(actor1).outDegree(rt)
+    verify(actor2, times(2)).outDegree(rt)
+    verify(actor3, times(2)).outDegree(rt) 
+    reset(actor1, actor2, actor3)
+    
+  }
+  
   test("test filter by rel type") {
     when(actor1.filterByRelType(rt)).thenReturn(Some(actor1))
     when(actor2.filterByRelType(rt)).thenReturn(Some(actor2))

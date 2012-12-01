@@ -26,6 +26,11 @@ class Network(val actors: List[Actor] = List[Actor]()) {
       }
     }
   
+  def averageDegree(relType: RelationType): Double = {
+    val outDegreesMap = outDegrees(relType)
+    outDegreesMap.foldLeft(0.0)((acc, actorEntry) => acc + actorEntry._2) / outDegreesMap.size
+  }
+  
   
   def filterByRelType(relType: RelationType): Option[Network] = {
     //for each actor, filter end actor. 
