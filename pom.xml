@@ -7,7 +7,7 @@
   <description>Analyzes the structure of the network</description>
   <packaging>jar</packaging>
   <url>https://github.com/dpavkov/network-analysis-metrics</url>
-  <licenses></licenses>
+  <licenses />
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
@@ -24,7 +24,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:dpavkov/network-analysis-metrics.git</connection>
 		<developerConnection>scm:git:git@github.com:dpavkov/network-analysis-metrics.git</developerConnection>
-		<url>git@github.com:dpavkov/network-analysis-metrics.git</url>
+		<url>scm:git:git@github.com:dpavkov/network-analysis-metrics.git</url>
 	</scm>
 
   <properties>
