@@ -20,7 +20,6 @@ Example project will be setup in the near future. Until then, please read the fo
 The domain describes two kinds of actors: Humans and Obin. Humans may like Humans, while Obin may like both Obin and Human. 
 
 First, for each of the relations the object that extends RelationType is defined:
-
 ```
 case object LikeRelationType extends RelationType("like")
 case object LikeObinRelationType extends RelationType("like obin")
@@ -49,7 +48,7 @@ override def toString: String = name
     else {
       val relations: List[Like] = (for (actor <- likes) yield {
         actor match {
-          case stub: Human => new Like(stub)
+          case human: Human => new Like(human)
           case _ => throw new IllegalArgumentException("relation not allowed")
         }
       }) toList
