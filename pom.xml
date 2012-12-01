@@ -23,7 +23,7 @@
 
 	<scm>
 		<connection>scm:git:git@github.com:dpavkov/network-analysis-metrics.git</connection>
-		<developerConnection>scm:git:git@github.com:dpavkov/network-analysis-metrics.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/dpavkov/network-analysis-metrics.git</developerConnection>
 		<url>https://github.com/dpavkov/network-analysis-metrics.git</url>
 	</scm>
 
