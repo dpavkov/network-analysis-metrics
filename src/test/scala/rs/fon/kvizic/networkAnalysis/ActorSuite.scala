@@ -22,6 +22,7 @@ class ActorSuite extends FunSuite {
     val modes: List[Mode] = List[Mode](mode1, mode2)
     def relations: List[Mode] = modes
     def updateRelations(newRels: List[Relation]): Actor = actor2
+    def removeMode(relType: RelationType) : Option[Actor] = Some(actor3)
   }
 
   val actor2 = mock[Actor]
@@ -123,5 +124,14 @@ class ActorSuite extends FunSuite {
     verify(mode1, times(1)).addOrReplaceRelation(rel3)
     verify(mode3, times(1)).relations
     reset(rel3, mode1, mode2, mode3)
+  }
+  
+  test("test filter by type") {
+    when(mode1.relType).thenReturn(rt1)
+    when(actor3.filterByRelType(rt2)).thenReturn(Some(actor4))
+    assert(actor4 == actor.filterByRelType(rt2).get)
+    verify(mode1, times(2)).relType
+    verify(actor3).filterByRelType(rt2)
+    reset(mode1, actor3)
   }
 }

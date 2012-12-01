@@ -37,11 +37,16 @@ class StubActor(val name: String, likes: => List[_ >: StubActor]) extends Actor 
     }
     new StubActor(name, actors)
   }
+  
+   def removeMode(relType: RelationType): Option[Actor] =
+     if (relType == LikeRelationType) None
+     else Some(this)
 
 }
 
 case object LikeRelationType extends RelationType("like")
 
-class Like(paramEndActor: StubActor) extends BinaryRelation(paramEndActor) {
+class Like(paramEndActor: Actor) extends BinaryRelation(paramEndActor) {
+  def updateEndActor(endActor: Actor): Relation = new Like(endActor)
   def relType: RelationType = LikeRelationType
 }

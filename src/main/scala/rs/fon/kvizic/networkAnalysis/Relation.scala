@@ -9,6 +9,8 @@ abstract class Relation(val endActor: Actor) {
   def value: Double
 
   def relType: RelationType
+  
+  def updateEndActor(endActor: Actor): Relation
 }
 
 abstract case class BinaryRelation(paramEndActor: Actor) extends Relation(paramEndActor) {

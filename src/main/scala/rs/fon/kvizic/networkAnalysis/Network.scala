@@ -5,7 +5,8 @@ import rs.fon.kvizic.networkAnalysis.algorithm.Tarjan
 class Network(val actors: List[Actor] = List[Actor]()) {
   
   override def toString: String = "\nNetwork: " + {
-    for (actor <- actors) yield "\n" + actor 
+    for (actor <- actors) yield "\n" + actor + ": " + actor.getAllEndActors
+    
   }
 
   protected def actorsByClass: Map[Class[_ <: Actor], List[Actor]] = actors.groupBy[Class[_ <: Actor]](actor => actor.getClass())
@@ -16,6 +17,48 @@ class Network(val actors: List[Actor] = List[Actor]()) {
   }
   
   def stronglyConnectedComponents: List[Network] = Tarjan.connectedComponents(this)
+  
+  def stronglyConnectedComponents(relType: RelationType): List[Network] = 
+    this.filterByRelType(relType) match {
+      case None => List()
+      case Some(network) => {
+        Tarjan.connectedComponents(network)
+      }
+    }
+  
+  
+  def filterByRelType(relType: RelationType): Option[Network] = {
+    //for each actor, filter end actor. 
+	def filterEndActors(actor: Actor, newNetwork: List[Actor]): Actor = {
+	  
+	  def getActor(relation: Relation, fromActors: List[Actor]): Relation = {
+	    if (fromActors.isEmpty) relation
+	    else if (fromActors.head == relation.endActor) relation.updateEndActor(fromActors.head)
+	    else getActor(relation, fromActors.tail)
+	  }
+	  
+	  val filteredEndActors: List[Relation] = 
+	   // By this point, all the actors are one-mode actors so there is no need to check if mode is none. However, this means that this function is not generic and should not be extracted outside of filterByRelType without refactoring!
+	    for {relation <- actor.getModeOrNone(relType).get.relations
+	      	} yield getActor(relation, newNetwork)
+	  
+	  actor.updateRelations(filteredEndActors)
+	}
+    
+    val filteredActors: List[Actor] = 
+      actors.foldLeft(List[Actor]())((filtered, actor) => 
+        actor.filterByRelType(relType) match {
+      case None => filtered
+      case Some(actor) => actor :: filtered
+    })
+    if (filteredActors.isEmpty) None
+    else {      
+    	val filteredEndActors: List[Actor] = 
+    	  for (actor <- filteredActors) yield filterEndActors(actor, filteredActors)
+    	Some(new Network(filteredEndActors))
+    }
+  }
+  
 
   def removeActors(oldActors: List[Actor]): Option[Network] = {
 

@@ -8,9 +8,12 @@ import org.scalatest.mock.MockitoSugar._
 class RelationSuite extends FunSuite {
 
   val mockEndActor = mock[Actor]
+  
+  val mockRelation = mock[Relation]
 
   test("test binary relation trait") {
     new BinaryRelation(mockEndActor) {
+      def updateEndActor(endActor: Actor): Relation = mockRelation
       def relType: RelationType = DefaultRelationType
       assert(1 == weight)
     }
@@ -19,6 +22,7 @@ class RelationSuite extends FunSuite {
   test("test value relation trait") {
     val value = 0.64
     new ValuedRelation(value, mockEndActor) {
+      def updateEndActor(endActor: Actor): Relation = mockRelation
       def relType: RelationType = DefaultRelationType
       assert(value == weight)
     }
@@ -27,6 +31,7 @@ class RelationSuite extends FunSuite {
   test("value out of boundaries must fail") {
     try {
       new ValuedRelation(1.64, mockEndActor) {
+        def updateEndActor(endActor: Actor): Relation = mockRelation
         def relType: RelationType = DefaultRelationType
       }.weight
       fail()
@@ -51,6 +56,7 @@ class RelationSuite extends FunSuite {
 
   test("test default description") {
     assert(1.0 == (new DescriptiveRelation(DefaultDescriptionHigh, mockEndActor) {
+      def updateEndActor(endActor: Actor): Relation = mockRelation
       def relType: RelationType = DefaultRelationType
     }).weight)
   }
@@ -59,6 +65,7 @@ class RelationSuite extends FunSuite {
     val descVal = 0.2
     case object TestDescription extends Description("test", descVal)
     assert(descVal == (new DescriptiveRelation(TestDescription, mockEndActor) {
+      def updateEndActor(endActor: Actor): Relation = mockRelation
       def relType: RelationType = DefaultRelationType
     }).weight)
   }
@@ -68,6 +75,7 @@ class RelationSuite extends FunSuite {
     case object TestDescriptionFail extends Description("test", descVal)
     try {
       val wei = (new DescriptiveRelation(TestDescriptionFail, mockEndActor) {
+        def updateEndActor(endActor: Actor): Relation = mockRelation
         def relType: RelationType = DefaultRelationType
       }).weight
       fail()

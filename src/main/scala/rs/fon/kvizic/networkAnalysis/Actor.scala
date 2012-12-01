@@ -28,6 +28,23 @@ trait Actor {
     }
     case None => None
   }
+  
+  def removeMode(relType: RelationType) : Option[Actor]
+  
+  def filterByRelType(relType: RelationType): Option[Actor] = relations match {
+    case Nil => throw new IllegalArgumentException("Empty network makes no sense!")
+    case mode :: Nil => if (mode.relType == relType) Some(this) else None
+      //recurse. if head is the one, just strip all the tails one by one. if not, remove head and see what head of the tail is
+    case mode :: tail => 
+      if (mode.relType == relType) {
+    	 val removedMode2 = removeMode(tail.head.relType).get
+    	 removedMode2.filterByRelType(relType)
+      } else {
+        val removedMode = removeMode(mode.relType).get
+    	 removedMode.filterByRelType(relType)
+      }
+      
+  }
 
   def getAllEndActors: List[Actor] = for {
     relType <- allRelTypes
