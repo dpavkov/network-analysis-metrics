@@ -164,7 +164,8 @@ class Human(val name: String, humans: => List[Human], obins: => List[Obin]) exte
 ```
 
 Now, lets create a mock repository with several actors defined:
-```object DataRepository {
+```
+object DataRepository {
 
   val jane: Human = new Human("jane", List(john, zoe), List())
   val john: Human = new Human("john", List(jane, zoe), List())
