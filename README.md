@@ -15,7 +15,8 @@ case object LikeObinRelationType extends RelationType("like obin")`
 
 Next, for each of the relation types create a concrete class that defines what kind of relation it should be. This is done by extending one of the subclasses of Relation abstract class. For our example simple BinaryRelation is used which only says that the relation exists:
 
-```class Like(paramEndActor: Human) extends BinaryRelation(paramEndActor) {
+```
+class Like(paramEndActor: Human) extends BinaryRelation(paramEndActor) {
   def updateEndActor(endActor: Actor): Like = endActor match{
     case human: Human => new Like(human)
     case _ => throw new IllegalArgumentException("you can like only a human")
@@ -29,11 +30,13 @@ class LikeObin(paramEndActor: Obin) extends BinaryRelation(paramEndActor) {
     case _ => throw new IllegalArgumentException("you can obinLike only obin!")
   }
   def relType: RelationType = LikeObinRelationType
-}```
+}
+```
 
 
 The next step is to wire your domain objects to the metrics. This is done by implementing Actor trait.
-```class Obin(val name: String, val likes: List[Actor]) extends Actor {
+```
+class Obin(val name: String, val likes: List[Actor]) extends Actor {
 override def toString: String = name
 
   override def equals(that: Any): Boolean = ???
@@ -77,8 +80,10 @@ def removeMode(relType: RelationType): Option[Actor] =
     new Obin(name, actors)
   }
 
-}```
-```class Human(val name: String, humans: => List[Human], obins: => List[Obin]) extends Actor {
+}
+```
+```
+class Human(val name: String, humans: => List[Human], obins: => List[Obin]) extends Actor {
 
   override def toString: String = name
   
@@ -155,7 +160,8 @@ def removeMode(relType: RelationType): Option[Actor] =
     }
     new Human(name, newLikes, obins)
   }
-}```
+}
+```
 
 Now, lets create a mock repository with several actors defined:
 ```object DataRepository {
@@ -171,10 +177,12 @@ Now, lets create a mock repository with several actors defined:
   val dickory: Obin = new Obin("dickory", List(zoe, john, jane))
   val hickory: Obin = new Obin("hickory", List(zoe, john, jane))
 
-}```
+}
+```
 
 Finally, lets open the repl, create the network and calculate the metrics:
-``` val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretchen, savitri, betsy, manfred, hickory))
+``` 
+val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretchen, savitri, betsy, manfred, hickory))
                                                   //> zoesTale  : rs.fon.kvizic.networkAnalysis.Network = 
                                                   //| Network: List(
                                                   //| zoe: List(john, jane, gretchen, enzo, hickory, dickory), 
