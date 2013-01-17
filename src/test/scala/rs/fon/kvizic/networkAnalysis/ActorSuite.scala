@@ -39,6 +39,21 @@ class ActorSuite extends FunSuite {
     verify(mode2, times(3)).relType
     reset(mode1, mode2)
   }
+  
+  test("test get mode multiple types throws illegal arguments exception") {
+    when(mode1.relType).thenReturn(rt1)
+    when(mode2.relType).thenReturn(rt1)
+    try {
+      actor.getModeOrNone(rt1)
+      fail("Test failed, exception not thrown")
+    } catch {
+      case _: IllegalStateException =>
+      case e => fail("wrong kind of exception thrown: " + e.getClass())
+    } 
+    verify(mode1, times(1)).relType
+    verify(mode2, times(1)).relType 
+    reset(mode1, mode2)
+  }
 
   test("test all rel types") {
     when(mode1.relType).thenReturn(rt1)
@@ -60,6 +75,17 @@ class ActorSuite extends FunSuite {
     verify(mode2, times(2)).relType
     verify(mode1, times(1)).relations
     verify(mode2, times(1)).relations
+    reset(mode1, mode2)
+  }
+  
+  test("test out degree no rels") {
+    when(mode1.relType).thenReturn(rt1)
+    when(mode2.relType).thenReturn(rt2)
+    when(mode1.relations).thenReturn(List[Relation](rel1, rel2))
+    when(mode2.relations).thenReturn(List[Relation](rel3))
+    assert(0 == actor.outDegree(rt3))
+    verify(mode1, times(1)).relType
+    verify(mode2, times(1)).relType
     reset(mode1, mode2)
   }
 

@@ -5,7 +5,7 @@
 	<version>0.2.0-SNAPSHOT</version>
 	<name>${project.artifactId}</name>
 	<description>Analyzes the structure of the network</description>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<url>https://github.com/dpavkov/network-analysis-metrics</url>
 	<licenses />
 	<parent>
@@ -92,18 +92,18 @@
 				<artifactId>maven-scala-plugin</artifactId>
 				<version>2.15.0</version>
 				<executions>
+					
 					<execution>
+						<id>main-scalac</id>
 						<goals>
 							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-scalac</id>
+						<goals>
 							<goal>testCompile</goal>
 						</goals>
-						<configuration>
-							<args>
-								<arg>-make:transitive</arg>
-								<arg>-dependencyfile</arg>
-								<arg>${project.build.directory}/.scala_dependencies</arg>
-							</args>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -120,6 +120,76 @@
 					</includes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+  <profile>
+    <id>coverage</id>
+    <repositories>
+      <repository>
+        <id>scct-repo</id>
+        <url>http://mtkopone.github.com/scct/maven-repo</url>
+      </repository>
+    </repositories>
+    <dependencies>
+      <dependency>
+        <groupId>reaktor</groupId>
+        <artifactId>scct_2.9.2</artifactId>
+        <version>0.2-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+    <build>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <systemPropertyVariables>
+              <scct.project.name>${project.name}</scct.project.name>
+              <scct.coverage.file>${project.build.outputDirectory}/coverage.data</scct.coverage.file>
+              <scct.report.dir>${project.build.directory}/coverage-report</scct.report.dir>
+              <scct.source.dir>${project.build.sourceDirectory}</scct.source.dir>
+            </systemPropertyVariables>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.scala-tools</groupId>
+          <artifactId>maven-scala-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>main-scalac</id>
+              <configuration>
+                <args>
+                  <args>-P:scct:projectId:${project.name}</args>
+                  <args>-P:scct:basedir:${project.basedir}</args>
+                </args>
+                <compilerPlugins>
+                  <compilerPlugin>
+                    <groupId>reaktor</groupId>
+                    <artifactId>scct_2.9.2</artifactId>
+                    <version>0.2-SNAPSHOT</version>
+                  </compilerPlugin>
+                </compilerPlugins>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
 </project>
