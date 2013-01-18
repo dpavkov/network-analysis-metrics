@@ -32,7 +32,7 @@ trait Actor {
   def removeMode(relType: RelationType) : Option[Actor]
   
   def filterByRelType(relType: RelationType): Option[Actor] = relations match {
-    case Nil => throw new IllegalArgumentException("Empty network makes no sense!")
+    case Nil => throw new IllegalStateException("Node without relations makes no sense!")
     case mode :: Nil => if (mode.relType == relType) Some(this) else None
       //recurse. if head is the one, just strip all the tails one by one. if not, remove head and see what head of the tail is
     case mode :: tail => 

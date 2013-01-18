@@ -24,6 +24,12 @@ class ActorSuite extends FunSuite {
     def updateRelations(newRels: List[Relation]): Actor = actor2
     def removeMode(relType: RelationType) : Option[Actor] = Some(actor3)
   }
+  
+  val actorNillRelations: Actor = new Actor() {
+     def relations: List[Mode] = Nil
+    def updateRelations(newRels: List[Relation]): Actor = actor2
+    def removeMode(relType: RelationType) : Option[Actor] = Some(actor3)
+  }
 
   val actor2 = mock[Actor]
   val actor3 = mock[Actor]
@@ -40,7 +46,7 @@ class ActorSuite extends FunSuite {
     reset(mode1, mode2)
   }
   
-  test("test get mode multiple types throws illegal arguments exception") {
+  test("test get mode multiple types throws illegal state exception") {
     when(mode1.relType).thenReturn(rt1)
     when(mode2.relType).thenReturn(rt1)
     try {
@@ -62,6 +68,16 @@ class ActorSuite extends FunSuite {
     verify(mode1, times(1)).relType
     verify(mode2, times(1)).relType
     reset(mode1, mode2)
+  }
+  
+  test("test node without relations throws illegal state exception") {
+    try {
+      actorNillRelations.filterByRelType(rt1)
+      fail("Test failed, exception not thrown")
+    } catch {
+      case _: IllegalStateException =>
+      case e => fail("wrong kind of exception thrown: " + e.getClass())
+    }    
   }
 
   test("test out degree") {
