@@ -26,10 +26,16 @@ class ActorSuite extends FunSuite {
   }
   
   val actorNillRelations: Actor = new Actor() {
-     def relations: List[Mode] = Nil
+    def relations: List[Mode] = Nil
     def updateRelations(newRels: List[Relation]): Actor = actor2
     def removeMode(relType: RelationType) : Option[Actor] = Some(actor3)
   }
+  
+  val actorOneRelationMode: Actor = new Actor() {
+    def relations: List[Mode] = List[Mode](mode1)
+    def updateRelations(newRels: List[Relation]): Actor = actor2
+    def removeMode(relType: RelationType) : Option[Actor] = Some(actor3)
+  }  
 
   val actor2 = mock[Actor]
   val actor3 = mock[Actor]
@@ -70,7 +76,7 @@ class ActorSuite extends FunSuite {
     reset(mode1, mode2)
   }
   
-  test("test node without relations throws illegal state exception") {
+  test("test filter by rel type: node without relations throws illegal state exception") {
     try {
       actorNillRelations.filterByRelType(rt1)
       fail("Test failed, exception not thrown")
@@ -80,6 +86,15 @@ class ActorSuite extends FunSuite {
     }    
   }
 
+  test("test filter by rel type: single mode node") {
+    when(mode1.relType).thenReturn(rt1)
+    assert(actorOneRelationMode == actorOneRelationMode.filterByRelType(rt1).get);
+    assert(None == actorOneRelationMode.filterByRelType(rt2).get);
+    verify(mode1, times(2)).relType
+    reset(mode1) 
+  }
+  
+  
   test("test out degree") {
     when(mode1.relType).thenReturn(rt1)
     when(mode2.relType).thenReturn(rt2)
