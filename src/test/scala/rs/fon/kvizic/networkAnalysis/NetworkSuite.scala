@@ -15,11 +15,13 @@ class NetworkSuite extends FunSuite {
   val actor3: Actor = mock[Actor]
   val actor4: Actor = mock[Actor]
   val network: Network = new Network(List[Actor](actor1, actor2, actor3))
+  val smallNetwork: Network = new Network(List[Actor](actor1))
   val mode1: Mode = mock[Mode]
   val mode2: Mode = mock[Mode]
   val relation1: Relation = mock[Relation]
   val relation2: Relation = mock[Relation]
   val relation3: Relation = mock[Relation]
+  
 
   val rt: RelationType = mock[RelationType]
 
@@ -27,23 +29,32 @@ class NetworkSuite extends FunSuite {
     assert(2 == network.removeActor(actor3).get.actors.size)
     assert(3 == network.removeActor(actor4).get.actors.size)
   }
+  
+  test("test actors by class") {
+    assert(3 == network.actorsByClass.head._2.size)
+  }
 
   test("test remove all") {
     assert(2 == network.removeActors(List(actor3)).get.actors.size)
     assert(2 == network.removeActors(List(actor3, actor4)).get.actors.size)
     assert(1 == network.removeActors(List(actor1, actor3, actor4)).get.actors.size)
     assert(None == network.removeActors(List(actor1, actor3, actor2)))
+    assert(None == network.removeActors(List(actor1, actor2, actor3, actor4)))
   }
 
   test("test add or replace actor") {
     assert(3 == network.addOrReplaceActor(actor3).actors.size)
     assert(4 == network.addOrReplaceActor(actor4).actors.size)
   }
+  
+  test("test add or replace on small network") {
+    assert(1 == smallNetwork.addOrReplaceActor(actor1).actors.size)
+  }
 
   test("test add or replace all") {
     assert(3 == network.addOrReplaceActors(List(actor3)).actors.size)
     assert(4 == network.addOrReplaceActors(List(actor3, actor4)).actors.size)
-  }
+  }  
 
   test("test out degrees") {
     when(actor1.outDegree(rt)).thenReturn(1)
@@ -60,7 +71,26 @@ class NetworkSuite extends FunSuite {
     when(actor1.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2)))
     when(actor2.getEndActorsOrNone(rt)).thenReturn(Some(List(actor1, actor3)))
     when(actor3.getEndActorsOrNone(rt)).thenReturn(None)
-    assert(3 == network.inDegrees(rt).size)
+    val inDegrees = network.inDegrees(rt)
+    assert(3 == inDegrees.size)
+    assert(1 == inDegrees.head._2)
+    assert(1 == inDegrees.tail.head._2)
+    assert(1 == inDegrees.tail.tail.head._2)
+    verify(actor1, times(1)).getEndActorsOrNone(rt)
+    verify(actor2, times(1)).getEndActorsOrNone(rt)
+    verify(actor3, times(1)).getEndActorsOrNone(rt)
+    reset(actor1, actor2, actor3)
+  }
+  
+  test("test in degrees; multiple actor") {
+    when(actor1.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2, actor3)))
+    when(actor2.getEndActorsOrNone(rt)).thenReturn(Some(List(actor1, actor3)))
+    when(actor3.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2)))
+    val inDegrees = network.inDegrees(rt)
+    assert(3 == inDegrees.size)
+    assert(2 == inDegrees.head._2)
+    assert(2 == inDegrees.tail.head._2)
+    assert(1 == inDegrees.tail.tail.head._2)
     verify(actor1, times(1)).getEndActorsOrNone(rt)
     verify(actor2, times(1)).getEndActorsOrNone(rt)
     verify(actor3, times(1)).getEndActorsOrNone(rt)
@@ -109,5 +139,16 @@ class NetworkSuite extends FunSuite {
     verify(actor1).updateRelations(List(relation3))
     verify(actor2).updateRelations(List(relation2))
     reset(actor1, actor2, actor3, mode1, mode2, relation1, relation2)
+  }
+
+  test("test filter by rel type returns none") {
+    when(actor1.filterByRelType(rt)).thenReturn(None)
+    when(actor2.filterByRelType(rt)).thenReturn(None)
+    when(actor3.filterByRelType(rt)).thenReturn(None)
+    assert(None ==  network.filterByRelType(rt))
+    verify(actor1).filterByRelType(rt)
+    verify(actor2).filterByRelType(rt)
+    verify(actor3).filterByRelType(rt)
+    reset(actor1, actor2, actor3)
   }
 }

@@ -31,8 +31,6 @@ object Tarjan {
       case Some(endActors) => endActors
     }) flatten
 
-    def visited: Boolean = index > 0
-
     def minLowLink(otherLowLink: Int): TarjanNode = new TarjanNode(actor, index, lowLink.min(otherLowLink))
 
   }
