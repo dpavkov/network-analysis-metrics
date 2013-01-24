@@ -87,8 +87,8 @@ class Network(val actors: List[Actor] = List[Actor]()) {
   }
   def addOrReplaceActors(newActors: List[Actor]): Network = newActors.foldLeft(this)((network, actor) => network addOrReplaceActor actor)
 
-  def outDegrees(relType: RelationType): Map[Actor, Int] = {
-    val noOfOutgoingRelsList: List[(Actor, Int)] =
+  def outDegrees(relType: RelationType): Map[Actor, Double] = {
+    val noOfOutgoingRelsList: List[(Actor, Double)] =
       for (actor: Actor <- actors if actor.outDegree(relType) > 0)
         yield (actor, actor.outDegree(relType))
     noOfOutgoingRelsList toMap

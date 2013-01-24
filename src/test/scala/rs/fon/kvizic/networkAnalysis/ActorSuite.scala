@@ -125,13 +125,19 @@ class ActorSuite extends FunSuite {
     when(mode2.relType).thenReturn(rt2)
     when(mode1.relations).thenReturn(List[Relation](rel1, rel2))
     when(mode2.relations).thenReturn(List[Relation](rel3))
-    assert(2 == actor.outDegree(rt1))
-    assert(1 == actor.outDegree(rt2))
+    when(rel1.value).thenReturn(1.0)
+    when(rel2.value).thenReturn(0.6)
+    when(rel3.value).thenReturn(1.0)
+    assert(1.6 == actor.outDegree(rt1))
+    assert(1.0 == actor.outDegree(rt2))
     verify(mode1, times(2)).relType
     verify(mode2, times(2)).relType
     verify(mode1, times(1)).relations
     verify(mode2, times(1)).relations
-    reset(mode1, mode2)
+    verify(rel1, times(1)).value
+    verify(rel2, times(1)).value
+    verify(rel3, times(1)).value
+    reset(mode1, mode2, rel1, rel2, rel3)
   }
   
   test("test out degree no rels") {
@@ -139,7 +145,7 @@ class ActorSuite extends FunSuite {
     when(mode2.relType).thenReturn(rt2)
     when(mode1.relations).thenReturn(List[Relation](rel1, rel2))
     when(mode2.relations).thenReturn(List[Relation](rel3))
-    assert(0 == actor.outDegree(rt3))
+    assert(0.0 == actor.outDegree(rt3))
     verify(mode1, times(1)).relType
     verify(mode2, times(1)).relType
     reset(mode1, mode2)
