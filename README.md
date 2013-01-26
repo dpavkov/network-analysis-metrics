@@ -183,7 +183,7 @@ object DataRepository {
 
 Finally, lets open the repl, create the network and calculate the metrics:
 ``` 
-val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretchen, savitri, betsy, manfred, hickory))
+ val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretchen, savitri, betsy, manfred, hickory))
                                                   //> zoesTale  : rs.fon.kvizic.networkAnalysis.Network = 
                                                   //| Network: List(
                                                   //| zoe: List(john, jane, gretchen, enzo, hickory, dickory), 
@@ -198,23 +198,25 @@ val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretche
                                                   //| hickory: List(zoe, john, jane))
   
   val likeIn: Map[Actor, Int] = zoesTale.inDegrees(LikeRelationType)
-                                                  //> likeIn  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(gretchen -> 2, 
-                                                  //| john -> 5, manfred -> 1, jane -> 4, zoe -> 5, enzo -> 1, savitri -> 1)
+                                                  //> likeIn  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(savitri -> 1, j
+                                                  //| ane -> 4, enzo -> 1, gretchen -> 2, manfred -> 1, john -> 5, zoe -> 5)
                                                   
-  val likeOut: Map[Actor, Int] = zoesTale.outDegrees(LikeRelationType)
-                                                  //> likeOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(gretchen -> 1,
-                                                  //|  john -> 2, manfred -> 1, jane -> 2, zoe -> 4, enzo -> 1, savitri -> 1, hick
-                                                  //| ory -> 3, betsy -> 1, dickory -> 3)
+  val likeOut: Map[Actor, Double] = zoesTale.outDegrees(LikeRelationType)
+                                                  //> likeOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(savitri -> 
+                                                  //| 1.0, hickory -> 3.0, jane -> 2.0, enzo -> 1.0, gretchen -> 1.0, manfred -> 1
+                                                  //| .0, john -> 2.0, dickory -> 3.0, betsy -> 1.0, zoe -> 4.0)
   
- 	val likeObinOut: Map[Actor, Int] = zoesTale.outDegrees(LikeObinRelationType)
-                                                  //> likeObinOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(zoe -> 2)
+ 	val likeObinOut: Map[Actor, Double] = zoesTale.outDegrees(LikeObinRelationType)
+                                                  //> likeObinOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(zoe -> 
+                                                  //| 2.0)
  	 
  	val likeObinIn: Map[Actor, Int] = zoesTale.inDegrees(LikeObinRelationType)
                                                   //> likeObinIn  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(hickory -> 
                                                   //| 1, dickory -> 1)
                                                   
    zoesTale.averageDegree(LikeRelationType)       //> res0: Double = 1.9
-   zoesTale.averageDegree(LikeObinRelationType)   //> res1: Double = 2.0
+   zoesTale.averageDegree(LikeObinRelationType)   //> res1: Double = 0.2
+   
  	
  	val components: List[Network] = zoesTale.stronglyConnectedComponents
                                                   //> components  : List[rs.fon.kvizic.networkAnalysis.Network] = List(
@@ -236,21 +238,28 @@ val zoesTale: Network = new Network(List(zoe, john, jane, dickory, enzo, gretche
  	val likeComponents: List[Network] = zoesTale.stronglyConnectedComponents(LikeRelationType)
                                                   //> likeComponents  : List[rs.fon.kvizic.networkAnalysis.Network] = List(
                                                   //| Network: List(
-                                                  //| manfred: List(gretchen), 
-                                                  //| gretchen: List(manfred)), 
-                                                  //| Network: List(
-                                                  //| hickory: List(zoe, john, jane)), 
-                                                  //| Network: List(
+                                                  //| dickory: List(zoe, john, jane), 
+                                                  //| hickory: List(zoe, john, jane), 
                                                   //| enzo: List(zoe), 
                                                   //| jane: List(john, zoe), 
                                                   //| john: List(jane, zoe), 
-                                                  //| zoe: List(john, jane, gretchen, enzo)), 
+                                                  //| zoe: List(john, jane, gretchen, enzo, hickory, dickory)), 
                                                   //| Network: List(
-                                                  //| betsy: List(savitri)), 
+                                                  //| manfred: List(gretchen), 
+                                                  //| gretchen: List(manfred)), 
                                                   //| Network: List(
                                                   //| savitri: List(john)), 
                                                   //| Network: List(
-                                                  //| dickory: List(zoe, john, jane)))
+                                                  //| betsy: List(savitri)))
+                                                  
+     zoesTale.centrality                          //> res2: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(savitri -> 3.2,
+                                                  //|  hickory -> 4.83, jane -> 3.5700000000000003, enzo -> 3.83, gretchen -> 1.0
+                                                  //| , manfred -> 1.0, john -> 3.5700000000000003, dickory -> 4.83, betsy -> 3.1
+                                                  //| 300000000000003, zoe -> 6.5)
+     
+        zoesTale.betweenness                      //> res3: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(savitri -> 0.88
+                                                  //| 88888888888888, jane -> 1.89484126984127, gretchen -> 1.0932539682539681, j
+                                                  //| ohn -> 2.367063492063492, zoe -> 4.609126984126984)
 ```
 
 * Rank relation example
