@@ -12,12 +12,16 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 
   protected[networkAnalysis] def actorsByClass: Map[Class[_ <: Actor], List[Actor]] = actors.groupBy[Class[_ <: Actor]](actor => actor.getClass())
 
+  private val dataHolder = new DataHolder(this)
+  
   def removeActor(oldActor: Actor): Option[Network] = actors.filter(a => !(a == oldActor)) match {
     case List() => None
     case newList => Option(new Network(newList))
   }
   
- lazy val  stronglyConnectedComponents: List[Network] = new Tarjan(this).connectedComponents
+ def stronglyConnectedComponents: List[Network] = dataHolder.connectedComponents
+ 
+ def centrality: Map[Actor, Double] = dataHolder.centralityValues
   
   def stronglyConnectedComponents(relType: RelationType): List[Network] = 
     this.filterByRelType(relType) match {
@@ -26,9 +30,7 @@ class Network(val actors: List[Actor] = List[Actor]()) {
         stronglyConnectedComponents
       }
     }
- 
- lazy val centrality: Map[Actor, Double] = new Centrality(new ShortestPath(this)).getCentralityValues
-  
+
   def averageDegree(relType: RelationType): Double = {
     val outDegreesMap = outDegrees(relType)
     outDegreesMap.foldLeft(0.0)((acc, actorEntry) => acc + actorEntry._2) / actors.size
