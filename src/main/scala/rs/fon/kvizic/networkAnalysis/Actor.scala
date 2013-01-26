@@ -51,6 +51,8 @@ trait Actor {
     if getEndActorsOrNone(relType) != None
     endActor <- getEndActorsOrNone(relType).get
   } yield endActor
+  
+  def getAllRelations: List[Relation] = relations.foldLeft(List[Relation]())((allRels, mode2) => allRels ::: mode2.relations) 
 
   //class that implements Actor trait is responsible for the relations order (ranking)
   def sync(relType: RelationType): Actor = {

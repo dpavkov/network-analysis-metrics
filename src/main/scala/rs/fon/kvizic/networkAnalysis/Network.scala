@@ -6,7 +6,6 @@ class Network(val actors: List[Actor] = List[Actor]()) {
   
   override def toString: String = "\nNetwork: " + {
     for (actor <- actors) yield "\n" + actor + ": " + actor.getAllEndActors
-    
   }
 
   protected[networkAnalysis] def actorsByClass: Map[Class[_ <: Actor], List[Actor]] = actors.groupBy[Class[_ <: Actor]](actor => actor.getClass())

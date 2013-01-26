@@ -1,4 +1,14 @@
-package rs.fon.kvizic.networkAnalysis
+package rs.fon.kvizic.networkAnalysis.stub
+
+import rs.fon.kvizic.networkAnalysis.Actor
+import rs.fon.kvizic.networkAnalysis.BinaryRelation
+import rs.fon.kvizic.networkAnalysis.Mode
+import rs.fon.kvizic.networkAnalysis.Relation
+import rs.fon.kvizic.networkAnalysis.RelationType
+import rs.fon.kvizic.networkAnalysis.Actor
+import rs.fon.kvizic.networkAnalysis.Mode
+import rs.fon.kvizic.networkAnalysis.Relation
+import rs.fon.kvizic.networkAnalysis.RelationType
 
 class StubActor(val name: String, likes: => List[_ >: StubActor]) extends Actor {
 
