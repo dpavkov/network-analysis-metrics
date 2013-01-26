@@ -23,7 +23,7 @@ class ShortestPathSuite extends FunSuite {
   test("test 1") {
     val network: Network = new Network(List(stub1, stub2, stub3, stub4))
     
-  	val shortestPathsForActors: Map[Actor, List[Path]] = ShortestPath.getPaths(network)
+  	val shortestPathsForActors: Map[Actor, List[Path]] = new ShortestPath(network).getPaths()
   	val shortestPath1 = shortestPathsForActors(stub1)
   	val shortestPath2 = shortestPathsForActors(stub2)
   	val shortestPath3 = shortestPathsForActors(stub3)
@@ -44,7 +44,7 @@ class ShortestPathSuite extends FunSuite {
   test("test 2") {
     val network: Network = new Network(List(stub5, stub6, stub7))
     
-  	val shortestPathsForActors: Map[Actor, List[Path]] = ShortestPath.getPaths(network)
+  	val shortestPathsForActors: Map[Actor, List[Path]] = new ShortestPath(network).getPaths()
   	val shortestPath1 = shortestPathsForActors(stub5)
   	val shortestPath2 = shortestPathsForActors(stub6)
   	val shortestPath3 = shortestPathsForActors(stub7)
@@ -73,7 +73,7 @@ class ShortestPathSuite extends FunSuite {
   test("test 3") {
     val network: Network = new Network(List(stub8, stub9, stub10, stub11, stub12, stub13, stub14, stub15, stub16))
     
-  	val shortestPathsForActors: Map[Actor, List[Path]] = ShortestPath.getPaths(network)
+  	val shortestPathsForActors: Map[Actor, List[Path]] = new ShortestPath(network).getPaths()
   	val shortestPath8 = shortestPathsForActors(stub8)
   	val shortestPath9 = shortestPathsForActors(stub9)
   	val shortestPath10 = shortestPathsForActors(stub10)

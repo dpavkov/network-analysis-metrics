@@ -1,6 +1,8 @@
 package rs.fon.kvizic.networkAnalysis
 
 import rs.fon.kvizic.networkAnalysis.algorithm.tarjan.Tarjan
+import rs.fon.kvizic.networkAnalysis.algorithm.shortestPath.ShortestPath
+import rs.fon.kvizic.networkAnalysis.algorithm.centrality.Centrality
 
 class Network(val actors: List[Actor] = List[Actor]()) {
   
@@ -15,15 +17,17 @@ class Network(val actors: List[Actor] = List[Actor]()) {
     case newList => Option(new Network(newList))
   }
   
-  def stronglyConnectedComponents: List[Network] = Tarjan.connectedComponents(this)
+ lazy val  stronglyConnectedComponents: List[Network] = new Tarjan(this).connectedComponents
   
   def stronglyConnectedComponents(relType: RelationType): List[Network] = 
     this.filterByRelType(relType) match {
       case None => List()
       case Some(network) => {
-        Tarjan.connectedComponents(network)
+        stronglyConnectedComponents
       }
     }
+ 
+ lazy val centrality: Map[Actor, Double] = new Centrality(new ShortestPath(this)).getCentralityValues
   
   def averageDegree(relType: RelationType): Double = {
     val outDegreesMap = outDegrees(relType)

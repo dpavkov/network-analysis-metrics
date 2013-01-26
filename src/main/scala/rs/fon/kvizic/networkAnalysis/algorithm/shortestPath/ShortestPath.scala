@@ -5,9 +5,9 @@ import rs.fon.kvizic.networkAnalysis.Actor
 import rs.fon.kvizic.networkAnalysis.Relation
 
 
-object ShortestPath {
+class ShortestPath(network: Network) {
   
-  def getPaths(network: Network): Map[Actor, List[Path]] = {
+  def getPaths(): Map[Actor, List[Path]] = {
     val paths = for (actor: Actor <- network.actors) 
       yield (actor, getPathsForActor(actor, network))
     paths.toMap

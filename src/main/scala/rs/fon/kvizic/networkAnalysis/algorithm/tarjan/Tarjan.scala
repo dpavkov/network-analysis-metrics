@@ -2,8 +2,8 @@ package rs.fon.kvizic.networkAnalysis.algorithm.tarjan
 
 import rs.fon.kvizic.networkAnalysis.Network
 
-object Tarjan {
-  def connectedComponents(network: Network): List[Network] = {
+class Tarjan(network: Network) {
+  def connectedComponents(): List[Network] = {
     val startingNodes: List[TarjanNode] = for (actor <- network.actors) yield new TarjanNode(actor)
 
     def connectedComponentsIter(root: TarjanNode, network: TarjanNetwork): List[TarjanNetwork] = {

@@ -3,9 +3,10 @@ package rs.fon.kvizic.networkAnalysis
 import org.junit.runner.RunWith
 import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
 import org.scalatest.mock.MockitoSugar._
 import org.mockito.Mockito.{ when, verify, times, reset }
+import rs.fon.kvizic.networkAnalysis.algorithm.shortestPath.ShortestPath
+import rs.fon.kvizic.networkAnalysis.algorithm.shortestPath.Path
 
 @RunWith(classOf[JUnitRunner])
 class NetworkSuite extends FunSuite {
@@ -16,6 +17,9 @@ class NetworkSuite extends FunSuite {
   val actor4: Actor = mock[Actor]
   val network: Network = new Network(List[Actor](actor1, actor2, actor3))
   val smallNetwork: Network = new Network(List[Actor](actor1))
+  val path1: Path = mock[Path]
+  val path2: Path = mock[Path]
+  val path3: Path = mock[Path]
   val mode1: Mode = mock[Mode]
   val mode2: Mode = mock[Mode]
   val relation1: Relation = mock[Relation]
@@ -151,4 +155,6 @@ class NetworkSuite extends FunSuite {
     verify(actor3).filterByRelType(rt)
     reset(actor1, actor2, actor3)
   }
+  
+ 
 }

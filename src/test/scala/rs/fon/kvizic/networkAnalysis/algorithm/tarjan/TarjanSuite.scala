@@ -23,7 +23,7 @@ class TarjanSuite extends FunSuite {
    */
   test("test 1") {
     val network: Network = new Network(List(stub1, stub2, stub3, stub4, stub5, stub6, stub7, stub8))
-    val components: List[Network] = Tarjan.connectedComponents(network)
+    val components: List[Network] = new Tarjan(network).connectedComponents()
     assert(5 == components.size)
     val componentsSizeCount: Map[Int, List[Network]] = components.groupBy(network => network.actors.size)
     assert(1 == componentsSizeCount(4).size)
@@ -41,7 +41,7 @@ class TarjanSuite extends FunSuite {
 
   test("test2") {
     val network: Network = new Network(List(stub9, stub10, stub11, stub12, stub13, stub14, stub15, stub16, stub17))
-    val components: List[Network] = Tarjan.connectedComponents(network)
+    val components: List[Network] = new Tarjan(network).connectedComponents()
     assert(4 == components.size)
     val componentsSizeCount: Map[Int, List[Network]] = components.groupBy(network => network.actors.size)
     assert(1 == componentsSizeCount(4).size)
