@@ -1,17 +1,12 @@
-package rs.fon.kvizic.networkAnalysis.algorithm
+package rs.fon.kvizic.networkAnalysis.algorithm.tarjan
 
 import rs.fon.kvizic.networkAnalysis.stub.StubActor
-import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import rs.fon.kvizic.networkAnalysis.Network
 import StubRepo._
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import rs.fon.kvizic.networkAnalysis.algorithm.Tarjan
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import rs.fon.kvizic.networkAnalysis.Network
+import org.junit.runner.RunWith
 
 @RunWith(classOf[JUnitRunner])
 class TarjanSuite extends FunSuite {

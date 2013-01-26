@@ -7,8 +7,6 @@ import org.scalatest.mock.MockitoSugar._
 import org.mockito.Mockito.{ when, verify, times, reset }
 import rs.fon.kvizic.networkAnalysis.Relation
 import rs.fon.kvizic.networkAnalysis.Actor
-import rs.fon.kvizic.networkAnalysis.algorithm.shortestPath.Path
-import sun.security.tools.policytool.NewPolicyPermOKButtonListener
 
 @RunWith(classOf[JUnitRunner])
 class PathSuite extends FunSuite{

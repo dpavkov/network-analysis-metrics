@@ -1,6 +1,6 @@
 package rs.fon.kvizic.networkAnalysis
 
-import rs.fon.kvizic.networkAnalysis.algorithm.Tarjan
+import rs.fon.kvizic.networkAnalysis.algorithm.tarjan.Tarjan
 
 class Network(val actors: List[Actor] = List[Actor]()) {
   
