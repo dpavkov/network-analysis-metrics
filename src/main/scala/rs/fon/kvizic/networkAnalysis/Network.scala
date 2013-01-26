@@ -22,6 +22,8 @@ class Network(val actors: List[Actor] = List[Actor]()) {
  def stronglyConnectedComponents: List[Network] = dataHolder.connectedComponents
  
  def centrality: Map[Actor, Double] = dataHolder.centralityValues
+ 
+ def betweenness: Map[Actor, Double] = dataHolder.betweennessValues
   
   def stronglyConnectedComponents(relType: RelationType): List[Network] = 
     this.filterByRelType(relType) match {
