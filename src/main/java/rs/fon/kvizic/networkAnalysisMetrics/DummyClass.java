@@ -6,5 +6,4 @@ package rs.fon.kvizic.networkAnalysisMetrics;
  *
  */
 class DummyClass {
-
 }
