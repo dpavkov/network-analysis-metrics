@@ -68,5 +68,19 @@ class BonacichCentralitySuite extends FunSuite {
 
 		verifyAndReset(2)
 	}
+	
+	test("Test current iter - start") {
+	  assert(0 == centrality.currentIter(vector))
+	}
+	
+	
+	test("Test current iter - after") {
+	  mockGetAllEndActors
+	  
+	  val nextCentrality = centrality.next(vector)
+	  assert(1 == nextCentrality.currentIter(vector))
+	  
+	  verifyAndReset(1)
+	}
 
 }

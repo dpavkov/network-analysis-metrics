@@ -6,6 +6,11 @@ class BonacichCentrality(val firstCalc: Map[Actor, Double], val iterations: Map[
 
 	def next(vector: BonacichVector): BonacichCentrality =
 		new BonacichCentrality(firstCalc, append(vector))
+	
+	def currentIter(vector: BonacichVector): Int =  iterations.get(vector) match {
+	  case Some(iters) => iters size
+	  case None => 0
+	}
 
 	private def append(vector: BonacichVector): Map[BonacichVector, List[Map[Actor, Double]]] = {
 		val previousVals: List[Map[Actor, Double]] = getNiceIterations(vector)

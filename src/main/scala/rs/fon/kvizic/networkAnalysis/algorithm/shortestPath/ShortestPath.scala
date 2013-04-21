@@ -43,7 +43,7 @@ class ShortestPath(network: Network) {
     }
 
     val allRelationsForStart = start.getAllRelations
-    if (allRelationsForStart.isEmpty) {
+    if (allRelationsForStart == null || allRelationsForStart.isEmpty) {
       List[Path]()
     } else {
       val firstRel = start.getAllRelations.head

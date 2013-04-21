@@ -3,6 +3,8 @@ package rs.fon.kvizic.networkAnalysis
 import rs.fon.kvizic.networkAnalysis.algorithm.tarjan.Tarjan
 import rs.fon.kvizic.networkAnalysis.algorithm.shortestPath.ShortestPath
 import rs.fon.kvizic.networkAnalysis.algorithm.centrality.Centrality
+import rs.fon.kvizic.networkAnalysis.algorithm.centrality.BonacichVector
+import rs.fon.kvizic.networkAnalysis.algorithm.centrality.BonacichCentrality
 
 class Network(val actors: List[Actor] = List[Actor]()) {
 
@@ -24,6 +26,21 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 	def centrality: Map[Actor, Double] = dataHolder.centralityValues
 
 	def betweenness: Map[Actor, Double] = dataHolder.betweennessValues
+	
+	def getBonacichCentrlity(vector: BonacichVector, degree: Int) = {
+    
+    def bonacichIter(centrality: BonacichCentrality, iter: Int): BonacichCentrality = {
+      if (iter > 0) 
+        bonacichIter(centrality.next(vector), iter - 1)
+        else {
+        	dataHolder.bonacich = centrality;
+        	centrality
+        }
+    }
+    
+    bonacichIter(dataHolder.bonacich, degree - dataHolder.bonacich.currentIter(vector)).iterations(vector)(degree - 1)
+    
+  } 
 
 	def stronglyConnectedComponents(relType: RelationType): List[Network] =
 		this.filterByRelType(relType) match {
