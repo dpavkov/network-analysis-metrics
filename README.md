@@ -260,6 +260,8 @@ Finally, lets open the repl, create the network and calculate the metrics:
         zoesTale.betweenness                      //> res3: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(savitri -> 0.88
                                                   //| 88888888888888, jane -> 1.89484126984127, gretchen -> 1.0932539682539681, j
                                                   //| ohn -> 2.367063492063492, zoe -> 4.609126984126984)
+
+	zoe.localClusteringCoef                         //> res4: Double = 0.2
 ```
 
 * Rank relation example
