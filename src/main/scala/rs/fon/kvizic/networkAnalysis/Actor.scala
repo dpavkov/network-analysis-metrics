@@ -86,14 +86,13 @@ trait Actor {
 		}
 	}
 
-	def countHasRelsAmong(actors: Set[Actor]): Integer = {
-		getAllEndActors.foldLeft(0)((acc, actor) => if (actors.contains(actor)) acc + 1 else acc)
-	}
-
 	def localClusteringCoef: Double = {
 		val endActors = getAllEndActors
 		val endActorsConnections: Double = endActors.foldLeft(0)((acc, actor) => acc + actor.countHasRelsAmong(endActors.toSet))
 		endActorsConnections / (endActors.size * (endActors.size - 1))
 	}
 
+	private def countHasRelsAmong(actors: Set[Actor]): Integer = {
+		getAllEndActors.foldLeft(0)((acc, actor) => if (actors.contains(actor)) acc + 1 else acc)
+	}
 }

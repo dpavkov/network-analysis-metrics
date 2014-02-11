@@ -9,14 +9,15 @@ import rs.fon.kvizic.networkAnalysis.algorithm.centrality.BonacichVector
 
 class DataHolder(network: Network) {
 
-  private val tarjan = new Tarjan(network)
-  private val shortestPath = new ShortestPath(network)
-  private val centrality = new Centrality(shortestPath)
-  private val betweenness = new Betweenness(shortestPath)
-  var bonacich = new BonacichCentrality(centralityValues, Map[BonacichVector, List[Map[Actor, Double]]]())
-  
-  lazy val connectedComponents = tarjan.connectedComponents
-  lazy val centralityValues = centrality.getCentralityValues
-  lazy val betweennessValues = betweenness.getBetweennessValue
-  
+	private val tarjan = new Tarjan(network)
+	private val shortestPath = new ShortestPath(network)
+	private val centrality = new Centrality(shortestPath)
+	private val betweenness = new Betweenness(shortestPath)
+	var bonacich = new BonacichCentrality(centralityValues, Map[BonacichVector, List[Map[Actor, Double]]]())
+
+	lazy val connectedComponents = tarjan.connectedComponents
+	lazy val centralityValues = centrality.getCentralityValues
+	lazy val betweennessValues = betweenness.getBetweennessValue
+	lazy val brokerage = betweenness.brokerage
+
 }
