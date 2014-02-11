@@ -26,21 +26,23 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 	def centrality: Map[Actor, Double] = dataHolder.centralityValues
 
 	def betweenness: Map[Actor, Double] = dataHolder.betweennessValues
-	
+
+	def brokerage: Map[Actor, Double] = dataHolder.brokerage
+
 	def getBonacichCentrlity(vector: BonacichVector, degree: Int) = {
-    
-    def bonacichIter(centrality: BonacichCentrality, iter: Int): BonacichCentrality = {
-      if (iter > 0) 
-        bonacichIter(centrality.next(vector), iter - 1)
-        else {
-        	dataHolder.bonacich = centrality;
-        	centrality
-        }
-    }
-    
-    bonacichIter(dataHolder.bonacich, degree - dataHolder.bonacich.currentIter(vector)).iterations(vector)(degree - 1)
-    
-  } 
+
+		def bonacichIter(centrality: BonacichCentrality, iter: Int): BonacichCentrality = {
+			if (iter > 0)
+				bonacichIter(centrality.next(vector), iter - 1)
+			else {
+				dataHolder.bonacich = centrality;
+				centrality
+			}
+		}
+
+		bonacichIter(dataHolder.bonacich, degree - dataHolder.bonacich.currentIter(vector)).iterations(vector)(degree - 1)
+
+	}
 
 	def stronglyConnectedComponents(relType: RelationType): List[Network] =
 		this.filterByRelType(relType) match {

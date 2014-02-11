@@ -88,8 +88,11 @@ trait Actor {
 
 	def localClusteringCoef: Double = {
 		val endActors = getAllEndActors
-		val endActorsConnections: Double = endActors.foldLeft(0)((acc, actor) => acc + actor.countHasRelsAmong(endActors.toSet))
-		endActorsConnections / (endActors.size * (endActors.size - 1))
+		if (endActors.size == 0 || endActors.size == 1) 0
+		else {
+			val endActorsConnections: Double = endActors.foldLeft(0)((acc, actor) => acc + actor.countHasRelsAmong(endActors.toSet))
+			endActorsConnections / (endActors.size * (endActors.size - 1))
+		}
 	}
 
 	private def countHasRelsAmong(actors: Set[Actor]): Integer = {

@@ -13,7 +13,11 @@ class Betweenness(shortestPath: ShortestPath) {
 	}
 
 	def brokerage(): Map[Actor, Double] = {
-		getBetweennessValue.map(((actorBetweennessTuple): (Actor, Double)) => (actorBetweennessTuple._1 -> actorBetweennessTuple._2 / actorBetweennessTuple._1.localClusteringCoef))
+		getBetweennessValue.map(((actorBetweennessTuple): (Actor, Double)) => (actorBetweennessTuple._1 ->
+			{
+				if (actorBetweennessTuple._1.localClusteringCoef == 0.0) 0.0
+				else actorBetweennessTuple._2 / actorBetweennessTuple._1.localClusteringCoef
+			}))
 	}
 
 	private def getMiddleElements(paths: List[Path]): Map[Actor, Double] = {

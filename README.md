@@ -261,7 +261,13 @@ Finally, lets open the repl, create the network and calculate the metrics:
                                                   //| 88888888888888, jane -> 1.89484126984127, gretchen -> 1.0932539682539681, j
                                                   //| ohn -> 2.367063492063492, zoe -> 4.609126984126984)
 
-	zoe.localClusteringCoef                         //> res4: Double = 0.2
+ zoe.localClusteringCoef                         //> res4: Double = 0.2
+  
+  zoesTale.brokerage                              //> res5: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(jane -> 1.89484
+                                                  //| 12698412698, zoe -> 23.045634920634914, john -> 2.367063492063492, savitri 
+                                                  //| -> 0.0, gretchen -> 0.0)
+
+
 ```
 
 * Rank relation example
