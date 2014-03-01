@@ -267,6 +267,13 @@ Finally, lets open the repl, create the network and calculate the metrics:
                                                   //| 12698412698, zoe -> 23.045634920634914, john -> 2.367063492063492, savitri 
                                                   //| -> 0.0, gretchen -> 0.0)
 
+ 
+  val clique = new Clique()                       //> clique  : rs.fon.kvizic.networkAnalysis.algorithm.clans.Clique = rs.fon.kvi
+                                                  //| zic.networkAnalysis.algorithm.clans.Clique@1cf68e9
+  clique.isA(List(jane, john, zoe))               //> res6: Boolean = true
+  
+  clique.isA(List(jane, john, zoe, dickory))      //> res7: Boolean = false
+
 
 ```
 
