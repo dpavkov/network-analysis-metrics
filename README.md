@@ -270,9 +270,14 @@ Finally, lets open the repl, create the network and calculate the metrics:
  
   val clique = new Clique()                       //> clique  : rs.fon.kvizic.networkAnalysis.algorithm.clans.Clique = rs.fon.kvi
                                                   //| zic.networkAnalysis.algorithm.clans.Clique@1cf68e9
+
   clique.isA(List(jane, john, zoe))               //> res6: Boolean = true
   
   clique.isA(List(jane, john, zoe, dickory))      //> res7: Boolean = false
+
+  new NeighborhoodOverlap().calculateCoefficient(zoe)
+                                                  //> res8: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(dickory -> 0.4,
+                                                  //|  jane -> 0.2, gretchen -> 0.0, hickory -> 0.4, john -> 0.2)
 
 
 ```
