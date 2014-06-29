@@ -38,7 +38,6 @@ class ShortestPath(network: Network) {
           case Some(path) => new Path(start, for (relations <- path.path) yield relation :: relations)
         }
       }
-      
       current.getAllRelations.foldLeft(visited)((visitedPaths, relation) => considerRelation(visitedPaths, relation))
     }
 
