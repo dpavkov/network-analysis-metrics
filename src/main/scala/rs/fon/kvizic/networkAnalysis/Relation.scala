@@ -6,7 +6,7 @@ abstract class Relation(val endActor: Actor) {
     require(value > 0 && value <= 1, value + " is not valid. Value must not be 0 or less and it can not be higher than one!")
     value
   }
-  def value: Double
+  protected def value: Double
 
   def relType: RelationType
   

@@ -16,7 +16,7 @@ trait Actor {
 		for (mode <- relations) yield mode.relType
 
 	def outDegree(relType: RelationType): Double = getModeOrNone(relType) match {
-		case Some(mode) => mode.relations.foldLeft(0.0)((res, item) => res + item.value)
+		case Some(mode) => mode.relations.foldLeft(0.0)((res, item) => res + item.weight)
 		case None => 0
 	}
 

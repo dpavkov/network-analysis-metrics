@@ -125,18 +125,18 @@ class ActorSuite extends FunSuite {
     when(mode2.relType).thenReturn(rt2)
     when(mode1.relations).thenReturn(List[Relation](rel1, rel2))
     when(mode2.relations).thenReturn(List[Relation](rel3))
-    when(rel1.value).thenReturn(1.0)
-    when(rel2.value).thenReturn(0.6)
-    when(rel3.value).thenReturn(1.0)
+    when(rel1.weight).thenReturn(1.0)
+    when(rel2.weight).thenReturn(0.6)
+    when(rel3.weight).thenReturn(1.0)
     assert(1.6 == actor.outDegree(rt1))
     assert(1.0 == actor.outDegree(rt2))
     verify(mode1, times(2)).relType
     verify(mode2, times(2)).relType
     verify(mode1, times(1)).relations
     verify(mode2, times(1)).relations
-    verify(rel1, times(1)).value
-    verify(rel2, times(1)).value
-    verify(rel3, times(1)).value
+    verify(rel1, times(1)).weight
+    verify(rel2, times(1)).weight
+    verify(rel3, times(1)).weight
     reset(mode1, mode2, rel1, rel2, rel3)
   }
   
