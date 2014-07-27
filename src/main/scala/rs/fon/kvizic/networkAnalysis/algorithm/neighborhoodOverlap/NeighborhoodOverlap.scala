@@ -1,10 +1,17 @@
 package rs.fon.kvizic.networkAnalysis.algorithm.neighborhoodOverlap
 
 import rs.fon.kvizic.networkAnalysis.Actor
+import rs.fon.kvizic.networkAnalysis.Network
 
-class NeighborhoodOverlap {
+class NeighborhoodOverlap (val network: Network) {
 
-	def calculateCoefficient(actor: Actor): Map[Actor, Double] = {
+	def overlap(): Map[Actor, Map[Actor, Double]] = {
+	 val coeff = for (actor: Actor <- network.actors) 
+	    yield (actor -> calculateCoefficient(actor))
+	 coeff toMap
+	}
+  
+	private def calculateCoefficient(actor: Actor): Map[Actor, Double] = {
 
 		def packResults(resultsIter: (Actor, Option[Double])): List[(Actor, Double)] = resultsIter._2 match {
 			case None => List()

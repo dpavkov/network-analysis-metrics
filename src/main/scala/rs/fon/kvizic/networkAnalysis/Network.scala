@@ -43,6 +43,15 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 		bonacichIter(dataHolder.bonacich, degree - dataHolder.bonacich.currentIter(vector)).iterations(vector)(degree - 1)
 
 	}
+	
+	def neighborhoodOverlap: Map[Actor, Map[Actor, Double]] = dataHolder.neighborhoodOverlapValues
+	
+	def neighborhoodOverlapFor(from: Actor, to: Actor): Double = 
+	  dataHolder.neighborhoodOverlapValues.get(from) match {
+	    case None => 0
+	    case Some(fromValues) => fromValues.getOrElse(to, 0)
+	  }
+	
 
 	def stronglyConnectedComponents(relType: RelationType): List[Network] =
 		this.filterByRelType(relType) match {
@@ -101,7 +110,7 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 
 		oldActors.foldLeft(Option(this))(removeActorsIter)
 	}
-
+	
 	def addOrReplaceActor(newActor: Actor): Network = {
 		val actorsAfterRemove: List[Actor] = removeActor(newActor) match {
 			case None => List[Actor]()

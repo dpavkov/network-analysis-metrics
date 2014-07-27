@@ -4,6 +4,7 @@ trait Actor {
 
 	def relations: List[Mode]
 	def updateRelations(newRels: List[Relation]): Actor
+	def removeMode(relType: RelationType): Option[Actor]
 
 	def getModeOrNone(relType: RelationType): Option[Mode] = {
 		val modesOfType: List[Mode] = relations.filter(mode => mode.relType == relType)
@@ -29,7 +30,6 @@ trait Actor {
 		case None => None
 	}
 
-	def removeMode(relType: RelationType): Option[Actor]
 
 	def filterByRelType(relType: RelationType): Option[Actor] = relations match {
 		case Nil => throw new IllegalStateException("Node without relations makes no sense!")

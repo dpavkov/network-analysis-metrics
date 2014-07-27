@@ -275,10 +275,15 @@ Finally, lets open the repl, create the network and calculate the metrics:
   
   clique.isA(List(jane, john, zoe, dickory))      //> res7: Boolean = false
 
-  new NeighborhoodOverlap().calculateCoefficient(zoe)
-                                                  //> res8: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(dickory -> 0.4,
-                                                  //|  jane -> 0.2, gretchen -> 0.0, hickory -> 0.4, john -> 0.2)
-
+ zoes.neighborhoodOverlap                         //> res0: Map[rs.fon.kvizic.networkAnalysis.Actor,Map[rs.fon.kvizic.networkAnaly
+                                                  //| sis.Actor,Double]] = Map(gretchen -> Map(), zoe -> Map(gretchen -> 0.0, hick
+                                                  //| ory -> 0.4, jane -> 0.2, john -> 0.2, dickory -> 0.4), betsy -> Map(), hicko
+                                                  //| ry -> Map(zoe -> 0.4, john -> 1.0, jane -> 1.0), manfred -> Map(), jane -> M
+                                                  //| ap(john -> 1.0, zoe -> 0.2), enzo -> Map(), john -> Map(jane -> 1.0, zoe -> 
+                                                  //| 0.2), savitri -> Map(), dickory -> Map(zoe -> 0.4, john -> 1.0, jane -> 1.0)
+                                                  //| )
+ 
+ zoes.neighborhoodOverlapFor(jane, john)          //> res1: Double = 1.0
 
 ```
 
