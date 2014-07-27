@@ -8,8 +8,11 @@ import scala.Double
 
 class Betweenness(shortestPath: ShortestPath) {
 
+	// retrieves betweenness values
 	def getBetweennessValue(): Map[Actor, Double] = {
-		shortestPath.getPaths.foldLeft(Map[Actor, Double]())((acc: Map[Actor, Double], paths: (Actor, List[Path])) => considerElements(acc, getMiddleElements(paths._2), paths._2.size))
+		shortestPath.getPaths.foldLeft(Map[Actor, Double]())(
+		    (acc: Map[Actor, Double], paths: (Actor, List[Path])) => 
+		      considerElements(acc, getMiddleElements(paths._2), paths._2.size))
 	}
 
 	def brokerage(): Map[Actor, Double] = {
@@ -29,21 +32,20 @@ class Betweenness(shortestPath: ShortestPath) {
 	}
 
 	private def getMiddleElements(paths: List[Path]): Map[Actor, Double] = {
+	  // retrieves elements in between other elements
 		val middleElements: List[Actor] =
 			for (
 				path <- paths;
 				singlePath <- path.path;
 				rel <- singlePath if !(rel.endActor == path.end)
 			) yield rel.endActor
+		// and count occurences for each actor
 		countOccurences(middleElements)
 	}
-
+	
+	// counts the number of times that each of actor is shown in the list
 	private def countOccurences(elements: List[Actor]): Map[Actor, Double] = {
-		elements.foldLeft(Map[Actor, Double]())((occurs, elem) => addOrIncrement(occurs, elem))
-	}
-
-	private def addOrIncrement(map: Map[Actor, Double], elem: Actor): Map[Actor, Double] = {
-		addOrIncrease(map, elem, 1.0)
+		elements.foldLeft(Map[Actor, Double]())((occurs, elem) => addOrIncrease(occurs, elem, 1.0))
 	}
 
 	private def addOrIncrease(map: Map[Actor, Double], elem: Actor, addend: Double): Map[Actor, Double] = {
@@ -52,8 +54,11 @@ class Betweenness(shortestPath: ShortestPath) {
 			case Some(prevVal: Double) => map.updated(elem, prevVal + addend)
 		}
 	}
-
+	// increase @param acc (betweenness values map), for each @param middleElement, depending on @param pathsCount (number of shortest paths)
 	private def considerElements(acc: Map[Actor, Double], middleElements: Map[Actor, Double], pathsCount: Int): Map[Actor, Double] = {
-		middleElements.foldLeft(acc)((acc, actorOccurences) => addOrIncrease(acc, actorOccurences._1, actorOccurences._2 / pathsCount))
+		middleElements.foldLeft(acc)((acc, actorOccurences) => 
+		  
+		  // actorOccurences - actor, number of occurences in the shortest paths
+		  addOrIncrease(acc, actorOccurences._1, actorOccurences._2 / pathsCount))
 	}
 }

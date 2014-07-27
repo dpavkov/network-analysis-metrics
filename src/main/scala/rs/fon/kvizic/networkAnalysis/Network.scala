@@ -130,11 +130,14 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 
 	def inDegrees(relType: RelationType): Map[Actor, Int] = {
 
+		// increases @param inDegrees map for all @param actor's relations
 		def inDegreesActorIter(inDegrees: Map[Actor, Int], actor: Actor): Map[Actor, Int] = {
 
 			def inDegreesEndActorIter(inDegreesInput: Map[Actor, Int], endActor: Actor): Map[Actor, Int] =
-				if (inDegreesInput contains endActor)
+			  if (inDegreesInput contains endActor)
+				  	// if this actor is already there, increases existing in degrees by 1
 					inDegreesInput updated (endActor, inDegreesInput(endActor) + 1)
+				// otherwise, adds the actor to the map
 				else inDegreesInput + (endActor -> 1)
 
 			actor.getEndActorsOrNone(relType) match {
@@ -144,7 +147,7 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 				case None => inDegrees
 			}
 		}
-
+		//starts with the empty in degrees map, and iterates through the actors
 		actors.foldLeft(Map[Actor, Int]())(inDegreesActorIter)
 	}
 }

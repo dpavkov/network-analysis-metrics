@@ -90,11 +90,14 @@ trait Actor {
 		val endActors = getAllEndActors
 		if (endActors.size == 0 || endActors.size == 1) 0
 		else {
+			// endActorsConnections is a number of triadic closures.
 			val endActorsConnections: Double = endActors.foldLeft(0)((acc, actor) => acc + actor.countHasRelsAmong(endActors.toSet))
+			//returns number of triadic closures divided by the number of possible triadic closures
 			endActorsConnections / (endActors.size * (endActors.size - 1))
 		}
 	}
 
+	// counts the size of the intersection between the endActors of this actor and @param actors
 	private def countHasRelsAmong(actors: Set[Actor]): Integer = {
 		getAllEndActors.foldLeft(0)((acc, actor) => if (actors.contains(actor)) acc + 1 else acc)
 	}
