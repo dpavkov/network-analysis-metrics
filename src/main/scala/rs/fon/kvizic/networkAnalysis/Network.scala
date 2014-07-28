@@ -128,27 +128,29 @@ class Network(val actors: List[Actor] = List[Actor]()) {
 		noOfOutgoingRelsList toMap
 	}
 
-	def inDegrees(relType: RelationType): Map[Actor, Int] = {
+	def inDegrees(relType: RelationType): Map[Actor, Double] = {
 
 		// increases @param inDegrees map for all @param actor's relations
-		def inDegreesActorIter(inDegrees: Map[Actor, Int], actor: Actor): Map[Actor, Int] = {
+		def inDegreesActorIter(inDegrees: Map[Actor, Double], actor: Actor): Map[Actor, Double] = {
 
-			def inDegreesEndActorIter(inDegreesInput: Map[Actor, Int], endActor: Actor): Map[Actor, Int] =
+			def inDegreesEndActorIter(inDegreesInput: Map[Actor, Double], relation: Relation): Map[Actor, Double] = {
+			  val endActor = relation.endActor
 			  if (inDegreesInput contains endActor)
-				  	// if this actor is already there, increases existing in degrees by 1
-					inDegreesInput updated (endActor, inDegreesInput(endActor) + 1)
+				  	// if this actor is already there, increases existing in degrees by weight
+					inDegreesInput updated (endActor, inDegreesInput(endActor) + relation.weight)
 				// otherwise, adds the actor to the map
-				else inDegreesInput + (endActor -> 1)
+				else inDegreesInput + (endActor -> relation.weight)
+			}
 
-			actor.getEndActorsOrNone(relType) match {
-				case Some(endActors) => {
-					endActors.foldLeft(inDegrees)(inDegreesEndActorIter)
+			actor.getModeOrNone(relType) match {
+				case Some(mode) => {
+					mode.relations.foldLeft(inDegrees)(inDegreesEndActorIter)
 				}
 				case None => inDegrees
 			}
 		}
 		//starts with the empty in degrees map, and iterates through the actors
-		actors.foldLeft(Map[Actor, Int]())(inDegreesActorIter)
+		actors.foldLeft(Map[Actor, Double]())(inDegreesActorIter)
 	}
 }
 

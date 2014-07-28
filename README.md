@@ -197,9 +197,9 @@ Finally, lets open the repl, create the network and calculate the metrics:
                                                   //| manfred: List(gretchen), 
                                                   //| hickory: List(zoe, john, jane))
   
-  val likeIn: Map[Actor, Int] = zoesTale.inDegrees(LikeRelationType)
-                                                  //> likeIn  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(savitri -> 1, j
-                                                  //| ane -> 4, enzo -> 1, gretchen -> 2, manfred -> 1, john -> 5, zoe -> 5)
+ zoesTale.inDegrees(LikeRelationType)             //> res0: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(jane -> 4.0, zoe
+                                                  //|  -> 5.0, enzo -> 1.0, manfred -> 1.0, gretchen -> 2.0, savitri -> 1.0, john 
+                                                  //| -> 5.0)
                                                   
   val likeOut: Map[Actor, Double] = zoesTale.outDegrees(LikeRelationType)
                                                   //> likeOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(savitri -> 
@@ -210,9 +210,8 @@ Finally, lets open the repl, create the network and calculate the metrics:
                                                   //> likeObinOut  : Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(zoe -> 
                                                   //| 2.0)
  	 
- 	val likeObinIn: Map[Actor, Int] = zoesTale.inDegrees(LikeObinRelationType)
-                                                  //> likeObinIn  : Map[rs.fon.kvizic.networkAnalysis.Actor,Int] = Map(hickory -> 
-                                                  //| 1, dickory -> 1)
+zoesTale.inDegrees(LikeObinRelationType)          //> res1: Map[rs.fon.kvizic.networkAnalysis.Actor,Double] = Map(hickory -> 1.0, 
+                                                  //| dickory -> 1.0)
                                                   
    zoesTale.averageDegree(LikeRelationType)       //> res0: Double = 1.9
    zoesTale.averageDegree(LikeObinRelationType)   //> res1: Double = 0.2

@@ -72,33 +72,65 @@ class NetworkSuite extends FunSuite {
   }
 
   test("test in degrees") {
-    when(actor1.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2)))
-    when(actor2.getEndActorsOrNone(rt)).thenReturn(Some(List(actor1, actor3)))
-    when(actor3.getEndActorsOrNone(rt)).thenReturn(None)
+    when(actor1.getModeOrNone(rt)).thenReturn(Some(mode1))
+    when(actor2.getModeOrNone(rt)).thenReturn(Some(mode2))
+    when(actor3.getModeOrNone(rt)).thenReturn(None)
+    when(mode1.relations).thenReturn(List(relation1, relation2))
+    when(mode2.relations).thenReturn(List(relation3))
+    when(relation1.endActor).thenReturn(actor1)
+    when(relation2.endActor).thenReturn(actor2)
+    when(relation3.endActor).thenReturn(actor3)
+    when(relation1.weight).thenReturn(0.3)
+    when(relation2.weight).thenReturn(1)
+    when(relation3.weight).thenReturn(1)
     val inDegrees = network.inDegrees(rt)
     assert(3 == inDegrees.size)
-    assert(1 == inDegrees.head._2)
+    assert(0.3 == inDegrees.head._2)
     assert(1 == inDegrees.tail.head._2)
     assert(1 == inDegrees.tail.tail.head._2)
-    verify(actor1, times(1)).getEndActorsOrNone(rt)
-    verify(actor2, times(1)).getEndActorsOrNone(rt)
-    verify(actor3, times(1)).getEndActorsOrNone(rt)
-    reset(actor1, actor2, actor3)
+    verify(actor1, times(1)).getModeOrNone(rt)
+    verify(actor2, times(1)).getModeOrNone(rt)
+    verify(actor3, times(1)).getModeOrNone(rt)
+    verify(mode1, times(1)).relations
+    verify(mode2, times(1)).relations
+    verify(relation1, times(1)).endActor
+    verify(relation2, times(1)).endActor
+    verify(relation3, times(1)).endActor
+    verify(relation1, times(1)).weight
+    verify(relation2, times(1)).weight
+    verify(relation3, times(1)).weight
+    reset(actor1, actor2, actor3, mode1, mode2, relation1, relation2, relation3)
   }
   
   test("test in degrees; multiple actor") {
-    when(actor1.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2, actor3)))
-    when(actor2.getEndActorsOrNone(rt)).thenReturn(Some(List(actor1, actor3)))
-    when(actor3.getEndActorsOrNone(rt)).thenReturn(Some(List(actor2)))
+    when(actor1.getModeOrNone(rt)).thenReturn(Some(mode1))
+    when(actor2.getModeOrNone(rt)).thenReturn(Some(mode2))
+    when(actor3.getModeOrNone(rt)).thenReturn(None)
+    when(mode1.relations).thenReturn(List(relation2, relation3))
+    when(mode2.relations).thenReturn(List(relation1, relation3))
+    when(relation1.endActor).thenReturn(actor1)
+    when(relation2.endActor).thenReturn(actor2)
+    when(relation3.endActor).thenReturn(actor3)
+    when(relation1.weight).thenReturn(0.3)
+    when(relation2.weight).thenReturn(1)
+    when(relation3.weight).thenReturn(1)
     val inDegrees = network.inDegrees(rt)
     assert(3 == inDegrees.size)
-    assert(2 == inDegrees.head._2)
+    assert(1 == inDegrees.head._2)
     assert(2 == inDegrees.tail.head._2)
-    assert(1 == inDegrees.tail.tail.head._2)
-    verify(actor1, times(1)).getEndActorsOrNone(rt)
-    verify(actor2, times(1)).getEndActorsOrNone(rt)
-    verify(actor3, times(1)).getEndActorsOrNone(rt)
-    reset(actor1, actor2, actor3)
+    assert(0.3 == inDegrees.tail.tail.head._2)
+    verify(actor1, times(1)).getModeOrNone(rt)
+    verify(actor2, times(1)).getModeOrNone(rt)
+    verify(actor3, times(1)).getModeOrNone(rt)
+    verify(mode1, times(1)).relations
+    verify(mode2, times(1)).relations
+    verify(relation1, times(1)).endActor
+    verify(relation2, times(1)).endActor
+    verify(relation3, times(2)).endActor
+    verify(relation1, times(1)).weight
+    verify(relation2, times(1)).weight
+    verify(relation3, times(2)).weight
+    reset(actor1, actor2, actor3, mode1, mode2, relation1, relation2, relation3)
   }
   
   test("test average degree") {
