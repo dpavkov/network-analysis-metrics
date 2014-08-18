@@ -18,11 +18,13 @@ class Betweenness(shortestPath: ShortestPath) {
 	def brokerage(): Map[Actor, Double] = {
 		getBetweennessValue.map(((actorBetweennessTuple): (Actor, Double)) => (actorBetweennessTuple._1 ->
 			{
+			  val actorsSize = actorBetweennessTuple._1.getAllEndActors.size
+			  if (actorsSize < 2) {
+			 	  0
 			  // if local clustering coeficient equals 0, then brokerage can't be calculated that way, so it
 			  // must be some logical small value: twice less than smallest possible lcc when there is at least one
 			  // connection among actor's neighbors: 1 / (k * (k - 1) * 2)
-				if (actorBetweennessTuple._1.localClusteringCoef == 0.0) {
-				  val actorsSize = actorBetweennessTuple._1.getAllEndActors.size
+			  } else if (actorBetweennessTuple._1.localClusteringCoef == 0.0) {
 				  val divider = 1 / (actorsSize * (actorsSize - 1) * 2)
 				  actorBetweennessTuple._2 / divider
 				}

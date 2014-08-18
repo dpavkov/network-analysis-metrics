@@ -14,7 +14,7 @@ class StubActor(val name: String, likes: => List[_ >: StubActor]) extends Actor 
 
   override def toString: String = name
 
-  def relations(): List[Mode] = {
+  override def relations(): List[Mode] = {
     if (likes.isEmpty) List.empty
     else {
       val relations: List[Like] = (for (actor <- likes) yield {
@@ -29,7 +29,7 @@ class StubActor(val name: String, likes: => List[_ >: StubActor]) extends Actor 
 
   }
 
-  def updateRelations(newRels: List[Relation]): Actor = {
+  override def updateRelations[A >: Actor](newRels: List[Relation]): A = {
     val relType = newRels match {
       case List() => throw new IllegalArgumentException("Empty list doesn`t make sense")
       case head :: tail => head.relType
@@ -40,7 +40,7 @@ class StubActor(val name: String, likes: => List[_ >: StubActor]) extends Actor 
     }
   }
 
-  def updateLike(likes: List[Relation]): StubActor = {
+  def updateLike[A >: Actor](likes: List[Relation]): A = {
     val actors: List[_ >: StubActor] = for (rel <- likes) yield rel match {
       case like: Like => like.endActor
       case _ => throw new IllegalArgumentException("unsupported relation")

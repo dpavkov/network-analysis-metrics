@@ -3,7 +3,7 @@ package rs.fon.kvizic.networkAnalysis
 trait Actor {
 
 	def relations: List[Mode]
-	def updateRelations(newRels: List[Relation]): Actor
+	def updateRelations[A >: Actor](newRels: List[Relation]): A
 	def removeMode(relType: RelationType): Option[Actor]
 
 	def getModeOrNone(relType: RelationType): Option[Mode] = {
@@ -32,7 +32,7 @@ trait Actor {
 
 
 	def filterByRelType(relType: RelationType): Option[Actor] = relations match {
-		case Nil => throw new IllegalStateException("Node without relations makes no sense!")
+		case Nil => None
 		case mode :: Nil => if (mode.relType == relType) Some(this) else None
 		//recurse. if head is the one, just strip all the tails one by one. if not, remove head and see what head of the tail is
 		case mode :: tail =>
@@ -79,7 +79,7 @@ trait Actor {
 
 	}
 
-	def addRelation(rel: Relation): Actor = {
+	def addRelation[A >: Actor](rel: Relation): A = {
 		getModeOrNone(rel.relType) match {
 			case Some(mode) => this updateRelations mode.addOrReplaceRelation(rel).relations
 			case None => this updateRelations List[Relation](rel)

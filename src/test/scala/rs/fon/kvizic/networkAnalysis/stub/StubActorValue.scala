@@ -25,7 +25,7 @@ class StubActorValue(val name: String, likes: => Map[_ >: Actor, Double]) extend
 
   }
 
-  def updateRelations(newRels: List[Relation]): Actor = {
+  def updateRelations[A >: Actor](newRels: List[Relation]): A = {
     val relType = newRels match {
       case List() => throw new IllegalArgumentException("Empty list doesn`t make sense")
       case head :: tail => head.relType
